@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+:root {
+  --font-color: #fff;
+  --bg-color: #222;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  background: var(--bg-color);
+  color: var(--font-color);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+a,
+button {
+  cursor: pointer;
+  color: var(--font-color);
+}
+input {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  color: var(--font-color);
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.full-container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.header .logo {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+.header .room-name {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgb(51, 51, 255);
+  width: 80px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.video-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  flex-grow: 1;
+}
+
+.video-box {
+  position: relative;
+}
+.video-box .video-frame {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+.video-box .btn-box {
+  position: absolute;
+  left: 50%;
+  bottom: 50px;
+  width: 400px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  z-index: 1;
+  transform: translateX(-50%);
+  border-radius: 50px;
+  overflow: hidden;
+}
+.video-box .btn-box button {
+  background: transparent;
+  border: none;
+  width: 100%;
+  height: 70px;
+  font-size: 2rem;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+.video-box .btn-box button:last-child {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.video-box .btn-camera-change {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 50px;
+  height: 50px;
+  font-size: 2rem;
+  background: transparent;
+  border: none;
+  display: none;
+}
