@@ -12,7 +12,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // view engine 설정
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', process.cwd() + '/src/views');
 
 app.get('/', (req, res) => {
   res.render('index');
