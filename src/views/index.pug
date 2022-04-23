@@ -11,18 +11,29 @@ html(lang="en")
       header.header
         .logo WebRTC
         .room-name#roomName
-      .video-container 
-        .video-box
-          video#myVideoFrame.video-frame(autoplay,playsinline)
-          .btn-box
-            button#btnMic
-              <i class="fa-solid fa-microphone"></i>
-            button#btnCamera
-              <i class="fa-solid fa-video"></i>
-          button.btn-camera-change#btnChangeCamera
-            <i class="fa-solid fa-arrows-rotate"></i>
-        .video-box
-          video#peerVideoFrame.video-frame(autoplay,playsinline)
+        button.btn-chat#btnChat 
+          <i class="fa-solid fa-message"></i>
+          | 채팅
+      .contents#contents.chat
+        .video-container 
+          .video-box
+            video#myVideoFrame.video-frame(autoplay,playsinline muted)
+            .btn-box
+              button#btnMic
+                <i class="fa-solid fa-microphone"></i>
+              button#btnCamera
+                <i class="fa-solid fa-video"></i>
+            button.btn-camera-change#btnChangeCamera
+              <i class="fa-solid fa-arrows-rotate"></i>
+          .video-box
+            video#peerVideoFrame.video-frame(autoplay,playsinline muted)
+        .chat-container
+          .chat-list#chatList
+          form#chatForm
+            textarea(name="chat") 
+            button(type="submit")
+              <i class="fa-solid fa-paper-plane"></i>
+      
 
     script(src="/socket.io/socket.io.js")
     script(src="/public/js/app.js")

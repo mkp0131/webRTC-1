@@ -8,6 +8,7 @@ let cameraIndex = 0;
 let cameras;
 let myRoomName;
 let myPeerConnection;
+let myDataChannel;
 
 const getUserMedia = async (deviceId) => {
   const defaultConstrains = {
@@ -34,6 +35,10 @@ const btnMic = document.getElementById('btnMic');
 const btnCamera = document.getElementById('btnCamera');
 const btnChangeCamera = document.getElementById('btnChangeCamera');
 const roomNameHTML = document.getElementById('roomName');
+const btnChat = document.getElementById('btnChat');
+const contentsHTML = document.getElementById('contents');
+const chatForm = document.getElementById('chatForm');
+const chatList = document.getElementById('chatList');
 
 // 버튼 컨트롤
 btnMic.addEventListener('click', () => {
@@ -75,6 +80,26 @@ btnChangeCamera.addEventListener('click', async () => {
       .find((sender) => sender.track.kind === 'video');
     videoSender.replaceTrack(myStream.getVideoTracks()[0]);
   }
+});
+
+btnChat.addEventListener('click', () => {
+  contentsHTML.classList.toggle('chat');
+});
+
+const appendChat = (chat, my = 'my') => {
+  const html = document.createElement('div');
+  html.classList.add('chat');
+  html.classList.add(my);
+  html.innerHTML = `<div class="speech-bubble">${chat}</div>`;
+  chatList.appendChild(html);
+};
+
+chatForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const chat = chatForm.querySelector('textarea[name="chat"]').value.trim();
+
+  appendChat(chat, 'my');
+  myDataChannel.send(chat);
 });
 
 // WebRtc 코드
@@ -140,6 +165,13 @@ nsp.on('roomList', (roomList) => {
 
 // 다른 사람이 방에 접속했을때
 nsp.on('join', async () => {
+  // 데이터 채널 생성
+  myDataChannel = myPeerConnection.createDataChannel('chat');
+  myDataChannel.addEventListener('message', (msg) => {
+    console.log(msg);
+    appendChat(msg.data, 'other');
+  });
+  console.log('😀', myDataChannel);
   // 새로운 오퍼 생성
   const offer = await myPeerConnection.createOffer();
   myPeerConnection.setLocalDescription(offer);
@@ -152,6 +184,7 @@ nsp.on('join', async () => {
 
 nsp.on('offer', (offer) => {
   console.log('offer 받았습니다.');
+
   const check = setInterval(async () => {
     if (myPeerConnection) {
       clearInterval(check);
@@ -160,6 +193,13 @@ nsp.on('offer', (offer) => {
       myPeerConnection.setLocalDescription(answer);
       nsp.emit('answer', answer, myRoomName, () => {
         console.log('answer 보냈습니다.');
+      });
+
+      myPeerConnection.addEventListener('datachannel', (data) => {
+        myDataChannel = data.channel;
+        myDataChannel.addEventListener('message', (msg) => {
+          appendChat(msg.data, 'other');
+        });
       });
     }
   }, 1000);
